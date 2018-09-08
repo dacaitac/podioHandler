@@ -39,13 +39,20 @@ app.use(methodOverride());
 
 var router = express.Router();
 
-router.get('/', function(req, res) {
+app.get('/', (req, res) => {
   setValues(values)
-   res.send("Hello World!");
+  res.status(200).send('Hello, world!');
 });
+// [END hello_world]
 
-app.use(router);
+if (module === require.main) {
+  // [START server]
+  // Start the server
+  const server = app.listen(process.env.PORT || 8080, () => {
+    const port = server.address().port;
+    console.log(`App listening on port ${port}`);
+  });
+  // [END server]
+}
 
-app.listen(3000, function() {
-  console.log("Node server running on http://localhost:3000");
-});
+module.exports = app;
