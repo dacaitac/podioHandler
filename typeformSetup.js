@@ -7,8 +7,7 @@ const config = JSON.parse(fs.readFileSync('./config.json'))
 
 const formId = config.typeform.formId // ID del formulario en typeform
 const options = {  //Opciones de configuracion para el formulario
-    url: 'https://api.typeform.com/forms/',
-    path: `${config.typeform.formId}`,
+    url: `https://api.typeform.com/forms/${formId}`,
     method: 'PUT',
     headers: {
         'Accept': 'application/json',
@@ -43,7 +42,7 @@ async function putForm(form, formId){
 // returns a JSON Form
 function getTypeformForm(formId){
   return new Promise((resolve, reject) => {
-    request(`${options.url}${formId}`, (err, res) => {
+    request(`${options.url}`, (err, res) => {
       if (err){reject(err)}
       console.log("Typeform form loaded succesfully.");
       resolve(JSON.parse(res.body))
