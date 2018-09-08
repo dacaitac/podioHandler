@@ -1,0 +1,35 @@
+{
+  "name": "podiohandler",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dacaitac/podioHandler.git"
+  },
+  "keywords": [
+    "podio"
+  ],
+  "author": "Daniel Caita",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dacaitac/podioHandler/issues"
+  },
+  "homepage": "https://github.com/dacaitac/podioHandler#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "http": "0.0.0",
+    "https": "^1.0.0",
+    "json-patch": "^0.7.0",
+    "method-override": "^3.0.0",
+    "mongoose": "^5.2.13",
+    "podio-js": "^1.6.1",
+    "querystring": "^0.2.0",
+    "request": "^2.88.0",
+    "url": "^0.11.0"
+  }
+}
