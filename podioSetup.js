@@ -102,6 +102,9 @@ function toItem (itemId) {
 // }
 // itemAction(899099523)
 // getItem(itemId)
+
+
+//Returns a list of fields from PodioField ID
 exports.getCategoryField = function getCategoryField(fieldId){
   return new Promise((resolve, reject) => {
     request('GET', `/app/${appId}/field/${fieldId}`)

@@ -18,25 +18,15 @@ const options = {  //Opciones de configuracion para el formulario
 };
 
 let form = getTypeformForm(formId)
-//Actualiza un formulario de typeform donde form es un objeto JSON con sus respectivos atributos
+//Actualiza un formulario de typeform donde form es un
+//objeto JSON con sus respectivos atributos
 async function putForm(form, formId){
   options.json = form
-
   //send request
-  function callback(error, response, body) {
-    if (!error) {
-        var info = JSON.parse(JSON.stringify(body));
-        // console.log(info);
-    }
-    else {
-      console.log(error);
-    }
-  }
-  //send request
-  console.log("Sending new form.");
-  request(options, callback)
+  request(options, () =>{
+    console.log(`Form ${formId} updated.`)
+  })
   form = await getTypeformForm(formId)
-  console.log(form);
 }
 
 // returns a JSON Form
@@ -44,11 +34,12 @@ function getTypeformForm(formId){
   return new Promise((resolve, reject) => {
     request(`${options.url}`, (err, res) => {
       if (err){reject(err)}
-      console.log("Typeform form loaded succesfully.");
-      resolve(JSON.parse(res.body))
+      console.log(`Typeform ${formId} loaded succesfully.`);
+      resolve(JSON.parse(res.body)) //response.body = formulario
     })
   })
 }
+
 
 function updateDropdown(fieldId, data){
   let newChoices = []
@@ -64,7 +55,7 @@ exports.updateForm = async function(formId, values){
   form = await getTypeformForm(formId)
   for(field in values){
     console.log(values[field].data);
-    if(Array.isArray(values[field].data)){
+    if(Array.isArray(values[field].data)){ //TODO: Actualizar cuando no es array
       updateDropdown(values[field].typeform_id ,values[field].data)
     }else{
       console.log("Data is not an array")

@@ -20,6 +20,12 @@ let values = {
   }
 }
 
+function resetValues(values){
+  for(field in values)
+    values[field].data = []
+}
+
+
 async function setValues(values){
   for(field in values){
     values[field].data = await podio.getCategoryField(values[field].podio_id)
@@ -41,6 +47,7 @@ var router = express.Router();
 
 app.get('/', (req, res) => {
   setValues(values)
+  setTimeout(resetValues(values), 2000)
   res.status(200).send('Hello, world!');
 });
 // [END hello_world]
@@ -56,3 +63,4 @@ if (module === require.main) {
 }
 
 module.exports = app;
+// setValues(values)
