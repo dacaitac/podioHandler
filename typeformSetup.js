@@ -48,6 +48,8 @@ function updateDropdown(fieldId, data){
     choice.label = data[i]
     newChoices.push(choice)
   }
+  // console.log(form.fields);
+  // console.log("----------------------------------");  
   form.fields[fieldId].properties.choices = newChoices
 }
 

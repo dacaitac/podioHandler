@@ -111,6 +111,8 @@ exports.getCategoryField = function getCategoryField(fieldId){
       .then((response) =>{
         let list = []
         let options = response.config.settings.options;
+        options = options.filter(option => option.status == 'active')
+        console.log(options);
         options.map((option) => {
           list.push(option.text)
         })
