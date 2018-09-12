@@ -34,33 +34,33 @@ async function setValues(values){
   typeform.updateForm(formId, values)
 }
 
-// var express = require("express"),
-//     app = express(),
-//     bodyParser  = require("body-parser"),
-//     methodOverride = require("method-override");
-//     mongoose = require('mongoose');
-//
-// app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(bodyParser.json());
-// app.use(methodOverride());
-//
-// var router = express.Router();
-//
-// app.get('/', (req, res) => {
-//   setValues(values)
-//   res.status(200).send('Hello, world!');
-// });
-// // [END hello_world]
-//
-// if (module === require.main) {
-//   // [START server]
-//   // Start the server
-//   const server = app.listen(process.env.PORT || 8080, () => {
-//     const port = server.address().port;
-//     console.log(`App listening on port ${port}`);
-//   });
-//   // [END server]
-// }
-//
-// module.exports = app;
-setValues(values)
+var express = require("express"),
+    app = express(),
+    bodyParser  = require("body-parser"),
+    methodOverride = require("method-override");
+    mongoose = require('mongoose');
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(methodOverride());
+
+var router = express.Router();
+
+app.get('/', (req, res) => {
+  setValues(values)
+  res.status(200).send('Hello, world!');
+});
+// [END hello_world]
+
+if (module === require.main) {
+  // [START server]
+  // Start the server
+  const server = app.listen(process.env.PORT || 8080, () => {
+    const port = server.address().port;
+    console.log(`App listening on port ${port}`);
+  });
+  // [END server]
+}
+
+module.exports = app;
+// setValues(values)
