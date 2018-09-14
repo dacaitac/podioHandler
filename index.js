@@ -30,6 +30,9 @@ async function setValues(values){
   resetValues(values)
   for(field in values){
     values[field].data = await podio.getCategoryField(values[field].podio_id)
+    .catch((err) => {
+      console.log(err)
+    })
   }
   typeform.updateForm(formId, values)
 }
@@ -48,7 +51,7 @@ var router = express.Router();
 
 app.get('/', (req, res) => {
   setValues(values)
-  res.status(200).send('Hello, world!');
+  res.status(200).send('Hello');
 });
 // [END hello_world]
 

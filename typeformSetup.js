@@ -23,10 +23,14 @@ let form = getTypeformForm(formId)
 async function putForm(form, formId){
   options.json = form
   //send request
-  request(options, () =>{
+  request(options, (err, res) =>{
+    if(err){console.log(err);}
     console.log(`Form ${formId} updated.`)
   })
   form = await getTypeformForm(formId)
+  .catch((err) => {
+    console.log(err)
+  })
 }
 
 // returns a JSON Form
@@ -40,7 +44,6 @@ function getTypeformForm(formId){
   })
 }
 
-
 function updateDropdown(fieldId, data){
   let newChoices = []
   for (let i = 0; i < data.length; i++) {
@@ -49,12 +52,16 @@ function updateDropdown(fieldId, data){
     newChoices.push(choice)
   }
   // console.log(form.fields);
-  // console.log("----------------------------------");  
+  // console.log("----------------------------------");
   form.fields[fieldId].properties.choices = newChoices
 }
 
 exports.updateForm = async function(formId, values){
   form = await getTypeformForm(formId)
+  .catch((err) => {
+    console.log(err)
+  })
+
   for(field in values){
     console.log(values[field].data);
     if(Array.isArray(values[field].data)){ //TODO: Actualizar cuando no es array
