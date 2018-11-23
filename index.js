@@ -58,11 +58,11 @@ app.get('/', (req, res) => {
 });
 // [END hello_world]
 
-app.get('/file', (req, res) => {
-  setValues(values)
-
-  res.status(200).send('File Updated');
-});)
+// app.get('/file', (req, res) => {
+//   setValues(values)
+//
+//   res.status(200).send('File Updated');
+// });)
 
 if (module === require.main) {
   // [START server]
