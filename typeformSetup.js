@@ -18,6 +18,7 @@ const options = {  //Opciones de configuracion para el formulario
 };
 
 let form = getTypeformForm(formId)
+exports.form = form
 //Actualiza un formulario de typeform donde form es un
 //objeto JSON con sus respectivos atributos
 async function putForm(form, formId){
@@ -31,6 +32,29 @@ async function putForm(form, formId){
   .catch((err) => {
     console.log(err)
   })
+}
+
+//Retorna un archivo, para el caso en el que se creo el metodo, la identificacion
+//del item se hizo por su email.
+exports.getFile = async function getFile(email){
+    aux = options
+    aux.url = `https://api.typeform.com/forms/${formId}/responses`
+    aux.method = 'GET'
+    request(aux, (error, response, body) => {
+      console.log('error:', error); // Print the error if one occurred
+      console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+      items =  body.items // Get Form Items
+      items.map( (item) => {
+        item.answers.map(ans => {
+          if(ans.field.id === 'ZzXi9aX0aGaM' && ans.email === email){
+            console.log(ans);
+          }
+          // if(ans.field.id === 'jFcKF2LevPtf' ){
+            // console.log(ans);
+          // }
+        })
+      })
+  });
 }
 
 // returns a JSON Form

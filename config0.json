@@ -1,0 +1,21 @@
+{
+  "podio": {
+    "clientId": "node-hxk8r0",
+    "clientSecret": "yit6uFJeyAqur0CbC1ciZxbGUIpMQtFcsuMd7C4Afg3kVY6lAoTCcKLoySe693gv",
+    "user": {
+      "username": "immanager@aiesec.org.pa",
+      "password": "aiesecenpanama2018"
+    },
+    "appToken": "a52b64b9d5b1452885d97dafc69c6cf8",
+    "appId": 21719955
+  },
+  "expa": {
+    "username": "yolanda.gomez@aiesec.net",
+    "password": "Teamobebe03",
+    "mc_id": 1582
+  },
+  "gmail":{
+    "user": "panama@aiesec.net",
+    "password": "Blueman18"
+  }
+}

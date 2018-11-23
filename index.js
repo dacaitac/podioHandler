@@ -1,3 +1,6 @@
+const request = require('request')
+
+
 const typeform = require('./typeformSetup')
 const podio = require('./podioSetup')
 
@@ -51,9 +54,15 @@ var router = express.Router();
 
 app.get('/', (req, res) => {
   setValues(values)
-  res.status(200).send('Hello');
+  res.status(200).send('Form Updated');
 });
 // [END hello_world]
+
+app.get('/file', (req, res) => {
+  setValues(values)
+
+  res.status(200).send('File Updated');
+});)
 
 if (module === require.main) {
   // [START server]
@@ -66,4 +75,6 @@ if (module === require.main) {
 }
 
 module.exports = app;
+// setValues(values)
+
 // setValues(values)
