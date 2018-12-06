@@ -39,7 +39,7 @@ function resetValues(values){
 }
 
 async function writeConfig( newConfig ){
-  await fs.writeFile('config.json', JSON.stringify(config), function (err) {
+  await fs.writeFile('config.json', JSON.stringify(config, null, 2), function (err) {
     if (err) return console.log(err);
     // console.log(JSON.stringify(config));
     console.log('Writing new config');
@@ -47,10 +47,6 @@ async function writeConfig( newConfig ){
 }
 
 async function setCopValues(formId, values){
-  config.podio.appToken = "ac254c52522c4e599e723312074005e8"
-  config.podio.appId = 21460631
-  writeConfig( config )
-
   resetValues(values)
   for(field in values){
     values[field].data = await podio.getCategoryField(21460631, values[field].podio_id)
@@ -65,9 +61,7 @@ async function setCopValues(formId, values){
 async function setAudValues(values){
   // Llama primero todas las empresas que estan en la aplicacion
   // CRM Empresas
-  config.podio.appToken = "0980ba976500450cacfcef31848883e3"
-  config.podio.appId = 14636882
-  writeConfig( config )
+
 
   resetValues(values)
   for(field in values){
