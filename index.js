@@ -1,11 +1,14 @@
 const request = require('request')
 
-
+const fs        = require('fs')
 const typeform = require('./typeformSetup')
-const podio = require('./podioSetup')
+const podio = require('./podioHandler')
+const config = JSON.parse(fs.readFileSync('./config.json'))
 
-const formId = 'LFqikz' // ID del formulario en typeform
-let values = {
+const copFormId = 'LFqikz' // ID del formulario en typeform
+const audFormId = 'e5MPWx'
+
+let copValues = {
   'COMPANY_NAME': {
     'typeform_id': 2,
     'podio_id' : 176573088,
@@ -23,21 +26,61 @@ let values = {
   }
 }
 
+let audValues = {
+  'COMPANY_NAME': {
+    'typeform_id': 4,
+    'data': []
+  }
+}
+
 function resetValues(values){
   for(field in values)
     values[field].data = []
 }
 
+async function writeConfig( newConfig ){
+  await fs.writeFile('config.json', JSON.stringify(config), function (err) {
+    if (err) return console.log(err);
+    // console.log(JSON.stringify(config));
+    console.log('Writing new config');
+  });
+}
 
-async function setValues(values){
+async function setCopValues(formId, values){
+  config.podio.appToken = "ac254c52522c4e599e723312074005e8"
+  config.podio.appId = 21460631
+  writeConfig( config )
+
   resetValues(values)
   for(field in values){
-    values[field].data = await podio.getCategoryField(values[field].podio_id)
+    values[field].data = await podio.getCategoryField(21460631, values[field].podio_id)
     .catch((err) => {
       console.log(err)
     })
   }
-  typeform.updateForm(formId, values)
+  typeform.updateForm(copFormId, values)
+}
+
+// Aud hace referencia a la app de auditoria en podio
+async function setAudValues(values){
+  // Llama primero todas las empresas que estan en la aplicacion
+  // CRM Empresas
+  config.podio.appToken = "0980ba976500450cacfcef31848883e3"
+  config.podio.appId = 14636882
+  writeConfig( config )
+
+  resetValues(values)
+  for(field in values){
+    // values[field].data = await podio.getAllItems(14636882)
+    await podio.getAllItems(14636882).then( items =>{
+      let titles = items.map(item => { return item.title })
+      values[field].data = titles
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }
+  typeform.updateForm(audFormId, values)
 }
 
 var express = require("express"),
@@ -52,15 +95,18 @@ app.use(methodOverride());
 
 var router = express.Router();
 
-app.get('/', (req, res) => {
-  setValues(values)
-  res.status(200).send('Form Updated');
+app.get('/coperations', (req, res) => {
+  setCopValues(copValues)
+  res.status(200).send('Coperations form Updated');
 });
-// [END hello_world]
+
+app.get('/audit', (req, res) => {
+  setAudValues(audValues)
+  res.status(200).send('Audit form Updated');
+});
 
 // app.get('/file', (req, res) => {
-//   setValues(values)
-//
+//   setCopValues(values)
 //   res.status(200).send('File Updated');
 // });)
 
@@ -75,6 +121,3 @@ if (module === require.main) {
 }
 
 module.exports = app;
-// setValues(values)
-
-// setValues(values)

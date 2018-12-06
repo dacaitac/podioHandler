@@ -28,7 +28,7 @@ function request (method, podioRequest, data) {
   return new Promise((resolve, reject) => {
     data = data || null
     podio.authenticateWithApp(appId, appToken, (err) => {
-      if (err) reject(error)
+      if (err) reject(err)
 
       podio.isAuthenticated()
         .then(() => { // Ready to make API calls in here...
@@ -104,14 +104,12 @@ exports.updateField = async function updateField( appId, fieldId, data ){
   .catch( error =>  console.log( error ) )
 }
 
-//No funciona
 exports.updateItem = async function updateItem( itemId, data ){
   await requestPass('PUT', `/item/${itemId}/value/`, data)
   .then( response => console.log( response ) )
   .catch( error =>  console.log(error) )
 }
 
-//No funciona
 exports.newItem = function newItem(appId, data){
   requestPass('POST', `/item/app/${appId}/`, data)
   .then( responseData => {
@@ -122,13 +120,12 @@ exports.newItem = function newItem(appId, data){
   })
 }
 
-//Ejecuta una accion sobre todos los items de una aplicacion
-exports.toAllItems = function toAllItems ( appId ) {
+exports.getAllItems = function getAllItems ( appId ) {
   return new Promise ((resolve, reject) => {
     request('GET', `/item/app/${appId}/`, null)
     .then( response => {
       let itemList = response.items
-      itemList.map( item => resolve(item.item_id) )
+      resolve(itemList)
     })
     .catch( err => console.log( err ) )
   })
@@ -146,14 +143,19 @@ exports.getItemValues = function getItemValues( itemId ) {
   })
 }
 
-function getHooks( itemId, fieldId ){
-  requestPass( 'PUT', ` /item/${ itemId }/value/${ fieldId }`, data )
-    .then( response  => console.log( response ))
-    .catch( err => console.log( err ) )
-}
-
-function validateHook( hookId ){
-  request( 'POST', `/hook/${ hookId }/verify/validate`, {"code": "code"} )
-    .then( response => console.log( response ) )
-    .catch( err => console.log( err ) )
+exports.getCategoryField = function getCategoryField(appId, fieldId){
+  return new Promise((resolve, reject) => {
+    request('GET', `/app/${appId}/field/${fieldId}`)
+      .then((response) =>{
+        let list = []
+        let options = response.config.settings.options;
+        options = options.filter(option => option.status == 'active')
+        // console.log(options);
+        options.map((option) => {
+          list.push(option.text)
+        })
+        resolve(list)
+      })
+      .catch(err => reject(err))
+  })
 }
