@@ -131,6 +131,11 @@ exports.getAllItems = function getAllItems ( appId ) {
     config.podio.appId = 21460631
   }
 
+  if (appId == 21471912){
+    config.podio.appToken = "b61f7b326b874748b40858f47211374b"
+    config.podio.appId = 21471912
+  }
+
   return new Promise ((resolve, reject) => {
     request('GET', `/item/app/${appId}/`, null)
     .then( response => {

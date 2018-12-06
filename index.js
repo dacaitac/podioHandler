@@ -7,6 +7,7 @@ const config = JSON.parse(fs.readFileSync('./config.json'))
 
 const copFormId = 'LFqikz' // ID del formulario en typeform
 const audFormId = 'e5MPWx'
+const epFormId = 'GFtkZF'
 
 let copValues = {
   'COMPANY_NAME': {
@@ -29,6 +30,13 @@ let copValues = {
 let audValues = {
   'COMPANY_NAME': {
     'typeform_id': 4,
+    'data': []
+  }
+}
+
+let epValues = {
+  'EP_NAME': {
+    'typeform_id': 0,
     'data': []
   }
 }
@@ -59,10 +67,6 @@ async function setCopValues(formId, values){
 
 // Aud hace referencia a la app de auditoria en podio
 async function setAudValues(values){
-  // Llama primero todas las empresas que estan en la aplicacion
-  // CRM Empresas
-
-
   resetValues(values)
   for(field in values){
     // values[field].data = await podio.getAllItems(14636882)
@@ -75,6 +79,21 @@ async function setAudValues(values){
     })
   }
   typeform.updateForm(audFormId, values)
+}
+
+async function setEPValues(values){
+  resetValues(values)
+  for(field in values){
+    // values[field].data = await podio.getAllItems(14636882)
+    await podio.getAllItems(21471912).then( items =>{
+      let titles = items.map(item => { return item.title })
+      values[field].data = titles
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  }
+  typeform.updateForm(epFormId, values)
 }
 
 var express = require("express"),
@@ -97,6 +116,11 @@ app.get('/coperations', (req, res) => {
 app.get('/audit', (req, res) => {
   setAudValues(audValues)
   res.status(200).send('Audit form Updated');
+});
+
+app.get('/newEP', (req, res) => {
+  setEPValues(epValues)
+  res.status(200).send('EP form Updated');
 });
 
 // app.get('/file', (req, res) => {
