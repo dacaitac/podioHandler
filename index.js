@@ -3,6 +3,7 @@ const request = require('request')
 const fs        = require('fs')
 const typeform = require('./typeformSetup')
 const podio = require('./podioHandler')
+const agreement = require('./agreement')
 const config = JSON.parse(fs.readFileSync('./config.json'))
 
 const copFormId = 'LFqikz' // ID del formulario en typeform
@@ -120,6 +121,7 @@ app.get('/audit', (req, res) => {
 
 app.get('/newEP', (req, res) => {
   setEPValues(epValues)
+  agreement.createAg(req.query)
   res.status(200).send('EP form Updated');
 });
 
