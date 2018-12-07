@@ -16,7 +16,7 @@ var options = {
     },
 };
 
-async function createAg( json ){
+exports.createAg = async function createAg( json ){
   let str = json.linkOp
   let arr = str.split("/")
   let code = arr[arr.length - 1]
@@ -81,5 +81,3 @@ let query = {
     linkOp: 'https://expa.aiesec.org/opportunities/1047227',
     correo: 'i7.danielcc@gmail.com'
 }
-
-createAg( query )
