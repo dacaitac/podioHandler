@@ -121,7 +121,12 @@ app.get('/audit', (req, res) => {
 
 app.get('/newEP', (req, res) => {
   setEPValues(epValues)
-  agreement.createAg(req.query)
+  if( Object.keys(req.query).length === 0 ){
+    console.log('Ep Created');
+  }else{
+    agreement.createAg(req.query)
+  }
+
   res.status(200).send('EP form Updated');
 });
 

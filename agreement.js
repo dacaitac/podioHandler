@@ -29,7 +29,7 @@ exports.createAg = async function createAg( json ){
           options: {
               dia: date.getDate(),
               mes: date.getMonth(),
-              anio: date.getYear(),
+              anio: date.getFullYear(),
               nombre: json.nombre,
               pasaporte: json.pasaporte,
               pais: json.pais,
