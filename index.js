@@ -124,6 +124,7 @@ app.get('/newEP', (req, res) => {
   if( Object.keys(req.query).length === 0 ){
     console.log('Ep Created');
   }else{
+    console.log(req.query);
     agreement.createAg(req.query)
   }
 

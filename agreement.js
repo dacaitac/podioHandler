@@ -1,6 +1,8 @@
 var fs = require('fs');
 var pdf = require('dynamic-html-pdf');
 var html = fs.readFileSync('./src/acuerdo.html', 'utf8');
+var html2 = fs.readFileSync('./src/agreement.html', 'utf8');
+var mailHtml = fs.readFileSync('./src/Correo.html', 'utf8');
 var nodemailer = require('nodemailer');
 const config = JSON.parse(fs.readFileSync('./config.json'))
 
@@ -21,6 +23,7 @@ exports.createAg = async function createAg( json ){
   let arr = str.split("/")
   let code = arr[arr.length - 1]
   let filename = `Acuerdo ${json.nombre}.pdf`
+  let filename2 = `Agreement ${json.nombre}.pdf`
 
   let date = new Date()
   var document = {
@@ -40,6 +43,23 @@ exports.createAg = async function createAg( json ){
       path: `./${filename}`
   }
 
+  var document2 = {
+      template: html2,
+      context: {
+          options: {
+              dia: date.getDate(),
+              mes: date.getMonth(),
+              anio: date.getFullYear(),
+              nombre: json.nombre,
+              pasaporte: json.pasaporte,
+              pais: json.pais,
+              empresa: json.empresa,
+              opcode: code
+          },
+      },
+      path: `./${filename2}`
+  }
+
   await pdf.create(document, options)
       .then(res => {
           console.log(res)
@@ -47,6 +67,16 @@ exports.createAg = async function createAg( json ){
       .catch(error => {
           console.error(error)
       });
+
+  await pdf.create(document2, options)
+      .then(res => {
+          console.log(res)
+      })
+      .catch(error => {
+          console.error(error)
+      });
+
+
 
   var transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -60,8 +90,12 @@ exports.createAg = async function createAg( json ){
     from: config.gmail.user,
     to: json.correo,
     subject: 'Proceso de Legalización',
-    text: 'That was easy!',
-    attachments: [{filename:`${filename}`, path: `./${filename}`}]
+    text: 'We have received your information.Thank you! The next document is the agreement of understanding that you signed.',
+    html: mailHtml,
+    attachments: [
+      {filename:`${filename}`, path: `./${filename}`},
+      {filename:`${filename2}`, path: `./${filename2}`}
+    ]
   }
 
   transporter.sendMail(mailOptions, function(error, info){
