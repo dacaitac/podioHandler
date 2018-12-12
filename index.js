@@ -120,6 +120,7 @@ app.get('/audit', (req, res) => {
 });
 
 app.get('/newEP', (req, res) => {
+  setAudValues(audValues)  
   setEPValues(epValues)
   if( Object.keys(req.query).length === 0 ){
     console.log('Ep Created');
